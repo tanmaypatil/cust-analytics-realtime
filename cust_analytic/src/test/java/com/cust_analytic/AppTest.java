@@ -10,9 +10,18 @@ import java.util.concurrent.ThreadLocalRandom;
  * Unit test for simple App.
  */
 class AppTest {
-    /**
-     * Rigorous Test.
-     */
+    SyncSequenceGenerator seq = new SyncSequenceGenerator();
+    SyncSequenceGenerator pseq = new SyncSequenceGenerator();
+
+    String getOrderId() {
+        String orderId = "O" + seq.getNext();
+        return orderId;
+    }
+    String getCustId() {
+        int CustIdNum = ThreadLocalRandom.current().nextInt(10000);
+        String custId = "C" + CustIdNum;
+        return custId;
+    }
     @Test
     void testApp() {
         assertEquals(1, 1);
@@ -21,7 +30,9 @@ class AppTest {
       @Test
     void kafkaProducerTest1() throws Exception{
         double amount = ThreadLocalRandom.current().nextDouble(10000);
-        Payment p = new Payment("O1", "C1", amount, "2020-11-12T09:02:00.000Z");
+        String custId = getCustId();
+        String orderId = getOrderId();
+        Payment p = new Payment(orderId, custId, amount, "2020-11-12T09:02:00.000Z");
         ProducerFactory pf = new ProducerFactory();
         long  offset = pf.send("P1", p);   
         Assertions.assertTrue(offset > 0);
@@ -30,7 +41,9 @@ class AppTest {
       @Test
     void kafkaProducerNegAmt() throws Exception{
         double amount = -1;
-        Payment p = new Payment("O1", "C1", amount, "2020-11-12T09:02:00.000Z");
+        String custId = getCustId();
+        String orderId = getOrderId();
+        Payment p = new Payment(orderId, custId, amount, "2020-11-13T09:02:00.000Z");
         ProducerFactory pf = new ProducerFactory();
         long  offset = pf.send("P1", p);   
         Assertions.assertTrue(offset > 0);
