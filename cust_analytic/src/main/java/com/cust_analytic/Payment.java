@@ -3,20 +3,21 @@ package com.cust_analytic;
 import com.google.gson.annotations.SerializedName;
 
 public class Payment {
-    @SerializedName("orderId")
-    String orderId ;    
-    @SerializedName("custId")
-    String custId ;
-    @SerializedName("amount")
-    double amount ;
-    @SerializedName("timeStamp")
-    String timeStamp ;
-     @SerializedName("status")
-    String status ;
-      
-     public Payment() {
+    @SerializedName("OrderId")
+    String orderId;
+    @SerializedName("CustId")
+    String custId;
+    @SerializedName("Amount")
+    double amount;
+    @SerializedName("TimeStamp")
+    String timeStamp;
+    @SerializedName("Status")
+    String status;
+
+    public Payment() {
 
     }
+
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
@@ -45,18 +46,17 @@ public class Payment {
         return this.status;
     }
 
-   public void setStatus(String status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
     public boolean isValid() {
-        if ( this.amount <= 0) 
-           status = "FAILED";
-        else 
-           status = "SUCCESS";
+        if (this.amount <= 0)
+            status = "FAILED";
+        else
+            status = "SUCCESS";
 
-        return status.equals("FAILED")  ?  true : false;
+        return status.equals("FAILED") ? true : false;
     }
 
-  
 }
