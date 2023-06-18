@@ -1,8 +1,11 @@
 package com.cust_analytic;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.UUID;
 
 public class Payment {
+    @SerializedName("PaymentId")
+    String paymentId;
     @SerializedName("OrderId")
     String orderId;
     @SerializedName("CustId")
@@ -16,6 +19,19 @@ public class Payment {
 
     public Payment() {
 
+    }
+
+    public Payment(String orderId , String custId ,double amount , String timeStamp ) {
+        this.orderId = orderId;
+        this.custId = custId;
+        this.amount = amount;
+        this.timeStamp = timeStamp;
+        if (this.amount <= 0)
+            this.status = "FAILED";
+        else
+            this.status = "SUCCESS";
+        UUID uuid = UUID.randomUUID();
+        this.paymentId = uuid.toString();
     }
 
     public void setOrderId(String orderId) {
