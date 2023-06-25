@@ -1,12 +1,18 @@
 package com.cust_analytic;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Order {
+    @SerializedName("OrderId")
     private String orderId;
+    @SerializedName("ProductId")
     private String productId;
+    @SerializedName("Quantity")
     private String quantity;
+    @SerializedName("location")
     private String location;
 
-    public Order( String productId, String quantity, String location , SequenceGenerator orderSeq) {
+    public Order(String productId, String quantity, String location, SequenceGenerator orderSeq) {
         generateOrderId(orderSeq);
         this.productId = productId;
         this.quantity = quantity;

@@ -33,7 +33,7 @@ class AppTest {
         String custId = getCustId();
         String orderId = getOrderId();
         Payment p = new Payment(orderId, custId, amount, "2020-11-12T09:02:00.000Z");
-        ProducerFactory pf = new ProducerFactory();
+        MessageProducer pf = new MessageProducer();
         long  offset = pf.send("P1", p);   
         Assertions.assertTrue(offset > 0);
     }
@@ -44,7 +44,7 @@ class AppTest {
         String custId = getCustId();
         String orderId = getOrderId();
         Payment p = new Payment(orderId, custId, amount, "2020-11-13T09:02:00.000Z");
-        ProducerFactory pf = new ProducerFactory();
+        MessageProducer pf = new MessageProducer();
         long  offset = pf.send("P1", p);   
         Assertions.assertTrue(offset > 0);
     }

@@ -13,10 +13,10 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
-public class ProducerFactory {
+public class MessageProducer {
     Producer<String, Payment> producer = null;
 
-    public  ProducerFactory() {
+    public  MessageProducer() {
         Properties properties = new Properties();
         properties.put("bootstrap.servers", "localhost:9092");
         properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
