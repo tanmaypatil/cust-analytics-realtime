@@ -14,7 +14,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
 public class MessageProducer {
-    Producer<String, Payment> producer = null;
+    Producer<String, IMessage> producer = null;
 
     public  MessageProducer() {
         Properties properties = new Properties();
@@ -29,9 +29,10 @@ public class MessageProducer {
       
     }
 
-    public long  send(String id, Payment value) {
+    public long  send(String id, IMessage value,String topic) {
+        Payment p = (Payment) value;
         RecordMetadata metadata = null ;
-        ProducerRecord<String, Payment> record = new ProducerRecord<>("payments", id, value);
+        ProducerRecord<String , IMessage> record = new ProducerRecord<String,IMessage>(topic, id, p);
         Future<RecordMetadata> sendFuture = producer.send(record);
         try {
             metadata = sendFuture.get();

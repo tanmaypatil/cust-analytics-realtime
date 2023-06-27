@@ -3,7 +3,7 @@ package com.cust_analytic;
 import com.google.gson.annotations.SerializedName;
 import java.util.UUID;
 
-public class Payment {
+public class Payment implements IMessage {
     @SerializedName("PaymentId")
     String paymentId;
     @SerializedName("OrderId")
