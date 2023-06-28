@@ -16,12 +16,22 @@ public class Payment implements IMessage {
     String timeStamp;
     @SerializedName("Status")
     String status;
+     @SerializedName("ProductId")
+    String productId;
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
 
     public Payment() {
 
     }
 
-    public Payment(String orderId , String custId ,double amount , String timeStamp ) {
+    public Payment(String orderId, String custId, double amount, String timeStamp) {
         this.orderId = orderId;
         this.custId = custId;
         this.amount = amount;
@@ -34,12 +44,24 @@ public class Payment implements IMessage {
         this.paymentId = uuid.toString();
     }
 
+    public String getPaymentId() {
+        return paymentId;
+    }
+
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
+    public String getOrderId() {
+        return this.orderId;
+    }
+
     public void setCustId(String custId) {
         this.custId = custId;
+    }
+
+    public String getCustId() {
+        return this.custId;
     }
 
     public double getAmount() {
