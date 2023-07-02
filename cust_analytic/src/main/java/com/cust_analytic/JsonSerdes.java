@@ -21,4 +21,10 @@ public class JsonSerdes {
     JsonDeserializer<Product> deserializer = new JsonDeserializer<>(Product.class);
     return Serdes.serdeFrom(serializer, deserializer);
   }
+
+  public static Serde<PaymentWithProduct> PaymentWithProduct() {
+    JsonSerializer<PaymentWithProduct> serializer = new JsonSerializer<>();
+    JsonDeserializer<PaymentWithProduct> deserializer = new JsonDeserializer<>(PaymentWithProduct.class);
+    return Serdes.serdeFrom(serializer, deserializer);
+  }
 }

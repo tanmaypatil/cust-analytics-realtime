@@ -1,5 +1,6 @@
 package com.cust_analytic;
 
+import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
@@ -50,7 +51,8 @@ public class CustTopology {
                 JsonSerdes.Product(), "payment-order");
         // Perform join - Payments and Products
         KStream<String,PaymentWithProduct> paymentsAndProducts = PaymentEvent.join(products, paymentProductJoiner, payOrderParams);
-        paymentsAndProducts.to("payments-products", null);
+        // result of join will be available in topic "payment-products"
+        paymentsAndProducts.to("payments-products",Produced.with(Serdes.String(),JsonSerdes.PaymentWithProduct()));
 
         return builder.build();
     }

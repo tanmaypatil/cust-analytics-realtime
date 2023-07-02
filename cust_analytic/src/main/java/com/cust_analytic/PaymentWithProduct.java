@@ -1,11 +1,15 @@
 package com.cust_analytic;
 
 public class PaymentWithProduct {
-    Payment payment;
-    Product product;
+    String paymentId;
+    double paymentAmount;
+    String productId;
+    String productName;
     public PaymentWithProduct(Payment payment, Product product) {
-        this.payment = payment;
-        this.product = product;
+        this.paymentId = payment.getPaymentId();
+        this.paymentAmount = payment.getAmount();
+        this.productId = product.getProductName();
+
     }
     
 }

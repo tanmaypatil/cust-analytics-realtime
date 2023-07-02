@@ -15,24 +15,31 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 
 public class MessageProducer {
     Producer<String, IMessage> producer = null;
+    Properties properties = new Properties();
+    final String valueSerializer =  "com.cust_analytic.";
 
-    public  MessageProducer() {
-        Properties properties = new Properties();
+    private void setDefault() {
         properties.put("bootstrap.servers", "localhost:9092");
-        properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        properties.put("value.serializer", "com.cust_analytic.PaymentSerializer");
+        properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer"); 
         properties.put("acks", "1");
         properties.put("retries", "3");
         properties.put("compression.type", "snappy");
+    }
 
+    private void setValueSerializer(String valueClass) {
+        String valClass =  valueSerializer + valueClass;
+        properties.put("value.serializer", valClass);
+    }
+
+    public  MessageProducer(String valueClass) {   
+        setDefault(); 
+        setValueSerializer(valueClass);
         producer = new KafkaProducer<>(properties);
-      
     }
 
     public long  send(String id, IMessage value,String topic) {
-        Payment p = (Payment) value;
         RecordMetadata metadata = null ;
-        ProducerRecord<String , IMessage> record = new ProducerRecord<String,IMessage>(topic, id, p);
+        ProducerRecord<String , IMessage> record = new ProducerRecord<String,IMessage>(topic, id, value);
         Future<RecordMetadata> sendFuture = producer.send(record);
         try {
             metadata = sendFuture.get();

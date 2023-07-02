@@ -31,7 +31,9 @@ public class Payment implements IMessage {
 
     }
 
-    public Payment(String orderId, String custId, double amount, String timeStamp) {
+
+    public Payment(String productId , String orderId, String custId, double amount, String timeStamp) {
+        this.productId = productId;
         this.orderId = orderId;
         this.custId = custId;
         this.amount = amount;
