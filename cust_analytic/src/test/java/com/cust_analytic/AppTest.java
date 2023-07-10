@@ -2,6 +2,7 @@ package com.cust_analytic;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -23,6 +24,17 @@ class AppTest {
 
     @BeforeAll
     private void initTopics() {
+        /* 
+        String topics[] = { "products","payments" };
+        KafkaUtils k = new KafkaUtils();
+        boolean status = k.deleteTopics(topics);
+        Assertions.assertTrue(status);
+        String[] list = k.listTopics();
+        System.out.println(Arrays.toString(list));
+        status = k.createTopics(topics);
+        Assertions.assertTrue(status);
+        */
+
 
     }
 
@@ -65,49 +77,57 @@ class AppTest {
     }
 
     @Test
+    @DisplayName("join between products ( K-Table ) and Payments(K-Streams)")
     void kafkaProductPaymentJoinTest1() throws Exception {
+        long new_offset = -1;
         MessageProducer pf = new MessageProducer("ProductSerializer");
         // First product
         Product pr = new Product("PRD1", "Book", "Black Swan");
         long offset = pf.send("PRD1", pr, "products");
-        Assertions.assertTrue(offset > 0);
+        Assertions.assertTrue(offset >= 0);
         // second product
         pr = new Product("PRD2", "Book", "An Officer and Spy");
-        offset = pf.send("PRD1", pr, "products");
-        Assertions.assertTrue(offset > 0);
+        new_offset = pf.send("PRD1", pr, "products");
+        Assertions.assertTrue(new_offset > offset);
+        offset = new_offset;
         // third product
         pr = new Product("PRD3", "Eletronics", "Apple iWatch");
-        offset = pf.send("PRD3", pr, "products");
+        new_offset = pf.send("PRD3", pr, "products");
+        Assertions.assertTrue(new_offset > offset);
         double amount = ThreadLocalRandom.current().nextDouble(10000);
         String custId = getCustId();
         String orderId = getOrderId();
+        offset = new_offset;
         // first payment P1
         Payment p = new Payment("PRD1", orderId, custId, amount, "2020-11-12T09:02:00.000Z");
         pf = new MessageProducer("PaymentSerializer");
-        offset = pf.send("P1", p, "payments");
-        Assertions.assertTrue(offset > 0);
+        new_offset = pf.send("P1", p, "payments");
+        Assertions.assertTrue(new_offset >= 0);
+        offset = new_offset;
         // payment P2
         p = new Payment("PRD1", orderId, custId, amount, "2020-11-13T09:02:00.000Z");
         pf = new MessageProducer("PaymentSerializer");
-        offset = pf.send("P2", p, "payments");
-        Assertions.assertTrue(offset > 0);
+        new_offset = pf.send("P2", p, "payments");
+        Assertions.assertTrue(new_offset > offset);
+        offset = new_offset;
         // payment P3
         p = new Payment("PRD2", orderId, custId, amount, "2020-11-12T09:02:00.000Z");
         pf = new MessageProducer("PaymentSerializer");
-        offset = pf.send("P1", p, "payments");
-        Assertions.assertTrue(offset > 0);
+        new_offset = pf.send("P1", p, "payments");
+        Assertions.assertTrue(new_offset > offset);
+        offset = new_offset;
         // payment P4
         p = new Payment("PRD2", orderId, custId, amount, "2020-11-13T09:02:00.000Z");
         pf = new MessageProducer("PaymentSerializer");
-        offset = pf.send("P2", p, "payments");
-        Assertions.assertTrue(offset >= 0);
+        new_offset = pf.send("P2", p, "payments");
+        Assertions.assertTrue(new_offset > offset);
     }
 
     // Delete topic test . test is not repeatable.
     // On a deleted topic , we would get interruped exception.
     @Test
     public void deleteTopics() {
-        String topics[] = { "products" };
+        String topics[] = { "products","payments" };
         KafkaUtils k = new KafkaUtils();
         boolean status = k.deleteTopics(topics);
         Assertions.assertTrue(status);
@@ -116,7 +136,7 @@ class AppTest {
 
     @Test
     public void createTopics() {
-        String topics[] = { "products" };
+        String topics[] = { "products","payments" };
         KafkaUtils k = new KafkaUtils();
         boolean status = k.createTopics(topics);
         Assertions.assertTrue(status);

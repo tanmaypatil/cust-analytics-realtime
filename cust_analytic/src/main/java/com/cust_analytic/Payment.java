@@ -18,7 +18,7 @@ public class Payment implements IMessage {
     String status;
      @SerializedName("ProductId")
     String productId;
-
+    // setter
     public void setProductId(String productId) {
         this.productId = productId;
     }

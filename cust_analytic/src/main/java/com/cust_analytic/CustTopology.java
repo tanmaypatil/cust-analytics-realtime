@@ -27,10 +27,6 @@ public class CustTopology {
                 "products",
                 Consumed.with(Serdes.String(), JsonSerdes.Product()));
 
-        // Order stream
-        KStream<String, Order> orders = builder.stream("orders",
-                Consumed.with(Serdes.String(), new OrderSerdes()));
-
         // Filter out failed payments
         KStream<byte[], Payment> filtered = stream.filterNot(
                 (key, payment) -> {
@@ -41,7 +37,7 @@ public class CustTopology {
 
        // Change the key to Product id
         KStream<String, Payment> PaymentEvent = builder
-                .stream("payments", Consumed.with(Serdes.ByteArray(), JsonSerdes.Payment()))
+                .stream("payment-stats", Consumed.with(Serdes.ByteArray(), JsonSerdes.Payment()))
                 .selectKey((k, v) -> v.getProductId().toString());
 
         ValueJoiner<Payment, Product, PaymentWithProduct> paymentProductJoiner = (payment,
