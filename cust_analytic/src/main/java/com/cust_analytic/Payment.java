@@ -23,8 +23,8 @@ public class Payment implements IMessage {
         this.productId = productId;
     }
 
-    publid void dummy() {
-        
+    public void dummy() {
+
     }
 
     public String getProductId() {
