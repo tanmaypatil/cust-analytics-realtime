@@ -94,7 +94,7 @@ class AppTest {
         pr = new Product("PRD3", "Eletronics", "Apple iWatch");
         new_offset = pf.send("PRD3", pr, "products");
         Assertions.assertTrue(new_offset > offset);
-        double amount = ThreadLocalRandom.current().nextDouble(10000);
+        double amount = Util.round(ThreadLocalRandom.current().nextDouble(10000),2);
         String custId = getCustId();
         String orderId = getOrderId();
         offset = new_offset;
@@ -105,21 +105,21 @@ class AppTest {
         Assertions.assertTrue(new_offset >= 0);
         offset = new_offset;
         // payment P2
-        amount = ThreadLocalRandom.current().nextDouble(10000);
+        amount = Util.round(ThreadLocalRandom.current().nextDouble(10000),2);
         p = new Payment("PRD1", orderId, custId, amount, "2020-11-13T09:02:00.000Z");
         pf = new MessageProducer("PaymentSerializer");
         new_offset = pf.send("P2", p, "payments");
         Assertions.assertTrue(new_offset > offset);
         offset = new_offset;
         // payment P3
-        amount = ThreadLocalRandom.current().nextDouble(10000);
+        amount = Util.round(ThreadLocalRandom.current().nextDouble(10000),2);
         p = new Payment("PRD2", orderId, custId, amount, "2020-11-12T09:02:00.000Z");
         pf = new MessageProducer("PaymentSerializer");
         new_offset = pf.send("P3", p, "payments");
         Assertions.assertTrue(new_offset > offset);
         offset = new_offset;
         // payment P4
-        amount = ThreadLocalRandom.current().nextDouble(10000);
+        amount = Util.round(ThreadLocalRandom.current().nextDouble(10000),2);
         p = new Payment("PRD2", orderId, custId, amount, "2020-11-13T09:02:00.000Z");
         pf = new MessageProducer("PaymentSerializer");
         new_offset = pf.send("P4", p, "payments");
