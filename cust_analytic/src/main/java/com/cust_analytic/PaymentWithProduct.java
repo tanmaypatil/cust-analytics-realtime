@@ -1,9 +1,15 @@
 package com.cust_analytic;
 
+import com.google.gson.annotations.SerializedName;
+
 public class PaymentWithProduct {
+   @SerializedName("PaymentId")
     String paymentId;
+    @SerializedName("PaymentAmount")
     double paymentAmount;
+    @SerializedName("ProductId")
     String productId;
+    @SerializedName("ProductName")
     String productName;
 
   public PaymentWithProduct(Payment payment, Product product) {

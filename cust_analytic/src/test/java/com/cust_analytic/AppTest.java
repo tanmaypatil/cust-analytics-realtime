@@ -87,7 +87,7 @@ class AppTest {
         Assertions.assertTrue(offset >= 0);
         // second product
         pr = new Product("PRD2", "Book", "An Officer and Spy");
-        new_offset = pf.send("PRD1", pr, "products");
+        new_offset = pf.send("PRD2", pr, "products");
         Assertions.assertTrue(new_offset > offset);
         offset = new_offset;
         // third product
@@ -105,21 +105,24 @@ class AppTest {
         Assertions.assertTrue(new_offset >= 0);
         offset = new_offset;
         // payment P2
+        amount = ThreadLocalRandom.current().nextDouble(10000);
         p = new Payment("PRD1", orderId, custId, amount, "2020-11-13T09:02:00.000Z");
         pf = new MessageProducer("PaymentSerializer");
         new_offset = pf.send("P2", p, "payments");
         Assertions.assertTrue(new_offset > offset);
         offset = new_offset;
         // payment P3
+        amount = ThreadLocalRandom.current().nextDouble(10000);
         p = new Payment("PRD2", orderId, custId, amount, "2020-11-12T09:02:00.000Z");
         pf = new MessageProducer("PaymentSerializer");
-        new_offset = pf.send("P1", p, "payments");
+        new_offset = pf.send("P3", p, "payments");
         Assertions.assertTrue(new_offset > offset);
         offset = new_offset;
         // payment P4
+        amount = ThreadLocalRandom.current().nextDouble(10000);
         p = new Payment("PRD2", orderId, custId, amount, "2020-11-13T09:02:00.000Z");
         pf = new MessageProducer("PaymentSerializer");
-        new_offset = pf.send("P2", p, "payments");
+        new_offset = pf.send("P4", p, "payments");
         Assertions.assertTrue(new_offset > offset);
     }
 
@@ -149,5 +152,13 @@ class AppTest {
         topics = k.listTopics();
         System.out.println(Arrays.toString(topics));
         Assertions.assertNotNull(topics);
+    }
+
+    @Test 
+    public void roundNumber() {
+        double amount = ThreadLocalRandom.current().nextDouble(10000);
+        double amt = Util.round(amount, 2);
+        System.out.println("amt "+amt);
+
     }
 }

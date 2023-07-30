@@ -43,10 +43,10 @@ public class CustTopology {
         ValueJoiner<Payment, Product, PaymentWithProduct> paymentProductJoiner = (payment,
                 product) -> new PaymentWithProduct(payment, product);
 
-        Joined<String, Payment, Product> payOrderParams = Joined.with(Serdes.String(), JsonSerdes.Payment(),
-                JsonSerdes.Product(), "payment-order");
+        Joined<String, Payment, Product> payProductParams = Joined.with(Serdes.String(), JsonSerdes.Payment(),
+                JsonSerdes.Product(), "payment-product-join");
         // Perform join - Payments and Products
-        KStream<String,PaymentWithProduct> paymentsAndProducts = PaymentEvent.join(products, paymentProductJoiner, payOrderParams);
+        KStream<String,PaymentWithProduct> paymentsAndProducts = PaymentEvent.join(products, paymentProductJoiner, payProductParams);
         // result of join will be available in topic "payment-products"
         paymentsAndProducts.to("payments-products",Produced.with(Serdes.String(),JsonSerdes.PaymentWithProduct()));
 
