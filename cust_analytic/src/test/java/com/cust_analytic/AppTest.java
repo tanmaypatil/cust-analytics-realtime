@@ -3,6 +3,7 @@ package com.cust_analytic;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -126,39 +127,49 @@ class AppTest {
         Assertions.assertTrue(new_offset > offset);
     }
 
-    // Delete topic test . test is not repeatable.
-    // On a deleted topic , we would get interruped exception.
-    @Test
-    public void deleteTopics() {
-        String topics[] = { "products","payments" };
-        KafkaUtils k = new KafkaUtils();
-        boolean status = k.deleteTopics(topics);
-        Assertions.assertTrue(status);
-
-    }
-
-    @Test
-    public void createTopics() {
-        String topics[] = { "products","payments" };
-        KafkaUtils k = new KafkaUtils();
-        boolean status = k.createTopics(topics);
-        Assertions.assertTrue(status);
-    }
-
-    @Test
-    public void listTopics() {
-        String[] topics = null;
-        KafkaUtils k = new KafkaUtils();
-        topics = k.listTopics();
-        System.out.println(Arrays.toString(topics));
-        Assertions.assertNotNull(topics);
-    }
-
     @Test 
-    public void roundNumber() {
-        double amount = ThreadLocalRandom.current().nextDouble(10000);
-        double amt = Util.round(amount, 2);
-        System.out.println("amt "+amt);
+    @DisplayName("test grouping")
+      void kafkaProductGrouping() throws Exception {
+        double amount = Util.round(ThreadLocalRandom.current().nextDouble(10000),2);
+        String custId = getCustId();
+        String orderId = getOrderId();
+        // payment on Eletronics product .
+        // Expect to see in the grouping
+        Payment p = new Payment("PRD3", orderId, custId, amount, "2020-11-12T09:02:00.000Z");
+        MessageProducer pf = new MessageProducer("PaymentSerializer");
+        long new_offset = pf.send("P10", p, "payments");
+        Assertions.assertTrue(new_offset >= 0);
+      }
 
-    }
+         @Test 
+    @DisplayName("test grouping2")
+      void kafkaProductGrouping2() throws Exception {
+        double amount = 1000;
+        String custId = getCustId();
+        String orderId = getOrderId();
+        // payment on Books product .
+        // Expect to see in the grouping amount increased by 1000 for books in product-summary
+        Payment p = new Payment("PRD1", orderId, custId, amount, "2020-11-12T09:02:00.000Z");
+        MessageProducer pf = new MessageProducer("PaymentSerializer");
+        long new_offset = pf.send("P17", p, "payments");
+        Assertions.assertTrue(new_offset >= 0);
+      }
+          @Test 
+    @DisplayName("test grouping3")
+      void kafkaProductGrouping3() throws Exception {
+        double amount = 3500;
+        String custId = getCustId();
+        String orderId = getOrderId();
+        // payment on Books product .
+        // Expect to see in the grouping amount increased by 1000 for books in product-summary
+        Payment p = new Payment("PRD3", orderId, custId, amount, "2020-11-12T09:02:00.000Z");
+        MessageProducer pf = new MessageProducer("PaymentSerializer");
+        long new_offset = pf.send("P19", p, "payments");
+        Assertions.assertTrue(new_offset >= 0);
+      }
+
+
+
 }
+
+
