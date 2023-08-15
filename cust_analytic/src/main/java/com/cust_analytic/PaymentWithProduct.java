@@ -11,12 +11,15 @@ public class PaymentWithProduct {
     String productId;
     @SerializedName("ProductName")
     String productName;
+    @SerializedName("Status")
+    String status;
 
   public PaymentWithProduct(Payment payment, Product product) {
         this.paymentId = payment.getPaymentId();
         this.paymentAmount = payment.getAmount();
         this.productId = product.getProductId();
         this.productName = product.getProductName();
+        this.status = payment.getStatus();
     }
 
     public String getPaymentId() {
@@ -30,6 +33,10 @@ public class PaymentWithProduct {
     }
     public String getProductName() {
         return productName;
+    }
+
+    public String getStatus() {
+        return status;
     }
    
   

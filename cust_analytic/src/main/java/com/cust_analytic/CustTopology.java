@@ -59,7 +59,7 @@ public class CustTopology {
                 // result of join will be available in topic "payment-products"
                 // Group the enriched product stream
                 KGroupedStream<String, PaymentWithProduct> grouped = paymentsAndProducts.groupBy(
-                                (key, value) -> value.getProductName().toString(),
+                                (key, value) -> value.getStatus().toString(),
                                 Grouped.with(Serdes.String(), JsonSerdes.PaymentWithProduct()));
 
                 // The initial value of our aggregation will be a new ProductSummary instance

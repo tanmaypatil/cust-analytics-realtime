@@ -23,7 +23,7 @@ public class JsonSerdes {
   }
 
   public static Serde<ProductSummary> ProductSummary() {
-    JsonSerializer<ProductSummary> serializer = new JsonSerializer<>();
+    JsonSerializer<ProductSummary> serializer = new JsonSerializer<ProductSummary>();
     JsonDeserializer<ProductSummary> deserializer = new JsonDeserializer<>(ProductSummary.class);
     return Serdes.serdeFrom(serializer, deserializer);
   }

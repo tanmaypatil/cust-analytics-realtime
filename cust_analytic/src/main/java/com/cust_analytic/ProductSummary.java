@@ -6,6 +6,11 @@ import com.google.gson.annotations.SerializedName;
 public class ProductSummary implements IMessage {
     private final HashMap<String, Double> aggregate = new HashMap<String, Double>();
 
+    public ProductSummary() {
+        aggregate.put("Book", 0.0);
+        aggregate.put("Eletronics",0.0);
+    }
+
     public ProductSummary add(final PaymentWithProduct obj) {
         System.out.println("start : size of hashmap "+aggregate.size());
         System.out.println(" product name : "+obj.getProductName() + " amount : "+obj.getPaymentAmount());
