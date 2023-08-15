@@ -80,13 +80,43 @@ public class MessageTest {
         Payment p = new Payment("PRD3", orderId, custId, amount, "2020-11-12T09:02:00.000Z");
         MessageProducer pf = new MessageProducer("PaymentSerializer");
         // Assumption payments topic is already created.
-        long new_offset = pf.send("P27", p, "payments");
+        long new_offset = pf.send("P30", p, "payments");
+        Assertions.assertTrue(new_offset >= 0);
+        p = new Payment("PRD2", orderId, custId, amount, "2020-11-12T09:02:00.000Z");
+        pf = new MessageProducer("PaymentSerializer");
+        // Assumption payments topic is already created.
+        new_offset = pf.send("P31", p, "payments");
+        Assertions.assertTrue(new_offset >= 0);
+        // Read from kafka topic
+        MessageConsumer mc = new MessageConsumer("ProductSummaryDeserializer");
+        IMessage rm = mc.receive("product-summary");
+        // Expect to receive message
+        Assertions.assertNotNull(rm);
+        ProductSummary rp = null ;
+        if( rm instanceof ProductSummary) {
+           rp = (ProductSummary) rm;
+        }
+        Assertions.assertTrue(rp.count() > 0);
+    
+     }
+
+
+     
+    @Test
+     public void receiveTestPaymentGrouping3() {
+        double amount = 1000;
+        String custId = Util.getCustId();
+        String orderId = Util.getOrderId();
+        Payment p = new Payment("PRD3", orderId, custId, amount, "2020-11-12T09:02:00.000Z");
+        MessageProducer pf = new MessageProducer("PaymentSerializer");
+        // Assumption payments topic is already created.
+        long new_offset = pf.send("P28", p, "payments");
         Assertions.assertTrue(new_offset >= 0);
 
         p = new Payment("PRD2", orderId, custId, amount, "2020-11-12T09:02:00.000Z");
         pf = new MessageProducer("PaymentSerializer");
         // Assumption payments topic is already created.
-        new_offset = pf.send("P28", p, "payments");
+        new_offset = pf.send("P29", p, "payments");
         Assertions.assertTrue(new_offset >= 0);
         // Read from kafka topic
         MessageConsumer mc = new MessageConsumer("ProductSummaryDeserializer");

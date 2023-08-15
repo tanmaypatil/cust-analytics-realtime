@@ -11,7 +11,7 @@ public class kafkaTest {
     // On a deleted topic , we would get interruped exception.
     @Test
     public void deleteTopics() {
-        String topics[] = { "products", "payments" };
+        String topics[] = { "product-summary", "payments" };
         KafkaUtils k = new KafkaUtils();
         boolean status = k.deleteTopics(topics);
         Assertions.assertTrue(status);
@@ -20,7 +20,7 @@ public class kafkaTest {
 
     @Test
     public void createTopics() {
-        String topics[] = { "products", "payments" };
+        String topics[] = {  "payments" };
         KafkaUtils k = new KafkaUtils();
         boolean status = k.createTopics(topics);
         Assertions.assertTrue(status);
