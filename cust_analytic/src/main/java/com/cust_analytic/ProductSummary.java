@@ -1,12 +1,9 @@
 package com.cust_analytic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
 import com.google.gson.annotations.SerializedName;
 
-public class ProductSummary {
+public class ProductSummary implements IMessage {
     @SerializedName("Aggregate")
     HashMap<String, Double> aggregate = new HashMap<String, Double>();
 
@@ -22,6 +19,13 @@ public class ProductSummary {
         }
         System.out.println("size of hashmap "+aggregate.size());
         return this;
+    }
+
+    public int count() {
+        if ( this.aggregate != null) {
+            return aggregate.size();
+        }
+        return 0;
     }
 
     

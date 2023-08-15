@@ -25,31 +25,10 @@ class AppTest {
 
     @BeforeAll
     private void initTopics() {
-        /* 
-        String topics[] = { "products","payments" };
-        KafkaUtils k = new KafkaUtils();
-        boolean status = k.deleteTopics(topics);
-        Assertions.assertTrue(status);
-        String[] list = k.listTopics();
-        System.out.println(Arrays.toString(list));
-        status = k.createTopics(topics);
-        Assertions.assertTrue(status);
-        */
-
-
+    
     }
 
-    String getOrderId() {
-        String orderId = "O" + seq.getNext();
-        return orderId;
-    }
-
-    String getCustId() {
-        int CustIdNum = ThreadLocalRandom.current().nextInt(10000);
-        String custId = "C" + CustIdNum;
-        return custId;
-    }
-
+   
     @Test
     void testApp() {
         assertEquals(1, 1);
@@ -58,8 +37,8 @@ class AppTest {
     @Test
     void kafkaProducerTest1() throws Exception {
         double amount = ThreadLocalRandom.current().nextDouble(10000);
-        String custId = getCustId();
-        String orderId = getOrderId();
+        String custId = Util.getCustId();
+        String orderId = Util.getOrderId();
         Payment p = new Payment("PRD1", orderId, custId, amount, "2020-11-12T09:02:00.000Z");
         MessageProducer pf = new MessageProducer("PaymentSerializer");
         long offset = pf.send("P1", p, "payments");
@@ -69,8 +48,8 @@ class AppTest {
     @Test
     void kafkaProducerNegAmt() throws Exception {
         double amount = -1;
-        String custId = getCustId();
-        String orderId = getOrderId();
+        String custId = Util.getCustId();
+        String orderId = Util.getOrderId();
         Payment p = new Payment("PRD1", orderId, custId, amount, "2020-11-13T09:02:00.000Z");
         MessageProducer pf = new MessageProducer("PaymentSerializer");
         long offset = pf.send("P1", p, "payments");
@@ -96,8 +75,8 @@ class AppTest {
         new_offset = pf.send("PRD3", pr, "products");
         Assertions.assertTrue(new_offset > offset);
         double amount = Util.round(ThreadLocalRandom.current().nextDouble(10000),2);
-        String custId = getCustId();
-        String orderId = getOrderId();
+        String custId = Util.getCustId();
+        String orderId = Util.getOrderId();
         offset = new_offset;
         // first payment P1
         Payment p = new Payment("PRD1", orderId, custId, amount, "2020-11-12T09:02:00.000Z");
@@ -131,8 +110,8 @@ class AppTest {
     @DisplayName("test grouping")
       void kafkaProductGrouping() throws Exception {
         double amount = Util.round(ThreadLocalRandom.current().nextDouble(10000),2);
-        String custId = getCustId();
-        String orderId = getOrderId();
+        String custId = Util.getCustId();
+        String orderId = Util.getOrderId();
         // payment on Eletronics product .
         // Expect to see in the grouping
         Payment p = new Payment("PRD3", orderId, custId, amount, "2020-11-12T09:02:00.000Z");
@@ -145,8 +124,8 @@ class AppTest {
     @DisplayName("test grouping2")
       void kafkaProductGrouping2() throws Exception {
         double amount = 1000;
-        String custId = getCustId();
-        String orderId = getOrderId();
+        String custId = Util.getCustId();
+        String orderId = Util.getOrderId();
         // payment on Books product .
         // Expect to see in the grouping amount increased by 1000 for books in product-summary
         Payment p = new Payment("PRD1", orderId, custId, amount, "2020-11-12T09:02:00.000Z");
@@ -158,8 +137,8 @@ class AppTest {
     @DisplayName("test grouping3")
       void kafkaProductGrouping3() throws Exception {
         double amount = 3500;
-        String custId = getCustId();
-        String orderId = getOrderId();
+        String custId = Util.getCustId();
+        String orderId = Util.getOrderId();
         // payment on Books product .
         // Expect to see in the grouping amount increased by 1000 for books in product-summary
         Payment p = new Payment("PRD3", orderId, custId, amount, "2020-11-12T09:02:00.000Z");

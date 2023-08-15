@@ -80,12 +80,6 @@ public class CustTopology {
                                 .withValueSerde(JsonSerdes.ProductSummary()));
                 
                 summary.toStream().to("product-summary");
-
-                /*
-                 * paymentsAndProducts.to("payments-products",
-                 * Produced.with(Serdes.String(), JsonSerdes.PaymentWithProduct()));
-                 */
-
                 return builder.build();
         }
 
