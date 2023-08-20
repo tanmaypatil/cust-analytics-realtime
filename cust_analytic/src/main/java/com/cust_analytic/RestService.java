@@ -12,7 +12,6 @@ import org.apache.kafka.streams.state.HostInfo;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 
-
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -37,9 +36,16 @@ public class RestService {
         Javalin app = Javalin.create().start(hostInfo.port());
         /** Local window store query: all entries */
         app.get("/sales/range/:key", this::getRange);
+        // HTTP exceptions
+        app.exception(NullPointerException.class, (e, ctx) -> {
+            // handle nullpointers here
+
+            ctx.status(404).result("product does not exist");
+        });
+
     }
 
-    void getRange(Context ctx) {
+    void getRange(Context ctx) {// HTTP exceptions
         List<Map<String, String>> bpms = new ArrayList<>();
         Map<String, String> bpm = new HashMap<>();
 

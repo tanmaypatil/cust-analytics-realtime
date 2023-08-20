@@ -7,7 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 
 public class MessageTest {
 
-    @DisplayName("create products ")
+    @DisplayName("create products in kafka topic products")
     @Test
     public void createProduct() {
         MessageProducer pf = new MessageProducer("ProductSerializer");
